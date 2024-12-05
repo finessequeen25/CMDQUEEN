@@ -90,3 +90,21 @@ button:hover {
     color: #ff00ff; /* Neon Pink */
     text-shadow: 0 0 15px #ff00ff;
 }
+/* Toggle Button */
+.toggle-button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #ff073a; /* Neon Red */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff073a;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #c70039;
+    transform: scale(1.05);
+}
