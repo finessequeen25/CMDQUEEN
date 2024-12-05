@@ -178,3 +178,7 @@ board.forEach((cell, index) => {
 
 // Add event listener to reset button
 resetButton.addEventListener('click', resetGame);
+board.forEach((cell, index) => {
+    cell.addEventListener('click', () => handlePlayerTurn(index));
+    cell.addEventListener('touchend', () => handlePlayerTurn(index)); // Add touch support
+});
