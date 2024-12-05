@@ -2,67 +2,72 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #121212; /* Dark Background */
+    background-color: #0d0d0d; /* Darker Background */
     color: #fff;
+    text-align: center;
 }
 
-/* Container */
 .container {
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Header */
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h1 {
+header h1 {
     color: #00ffff; /* Neon Cyan */
     font-size: 3rem;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    text-shadow: 0 0 15px #00ffff, 0 0 25px #00ffff;
 }
 
 .search-container {
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
 }
 
 input[type="text"] {
     padding: 10px;
-    width: 70%;
+    width: 60%;
     border: none;
-    border-radius: 5px;
-    outline: none;
+    border-radius: 10px;
     background-color: #1e1e1e;
     color: #00ff00; /* Neon Green */
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 15px #00ff00;
 }
 
 button {
-    padding: 10px 15px;
+    padding: 10px 20px;
     background-color: #ff073a; /* Neon Red */
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     color: white;
-    cursor: pointer;
     font-size: 1rem;
-    text-shadow: 0 0 5px #ff073a;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff073a;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
     background-color: #c70039;
-    text-shadow: 0 0 15px #ff073a;
+    transform: scale(1.05);
 }
 
-/* Weather Sections */
+/* Weather Section */
 .weather-section {
-    margin: 20px 0;
+    margin-top: 30px;
+}
+
+#weatherDetails, #forecastDetails {
+    margin-top: 20px;
 }
 
 #forecastDetails {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
 }
 
@@ -70,13 +75,18 @@ button:hover {
     background-color: #1e1e1e;
     border-radius: 10px;
     padding: 15px;
-    width: 120px;
-    text-align: center;
+    width: 150px;
     color: #39ff14; /* Neon Green */
     box-shadow: 0 0 10px #39ff14;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forecast-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #39ff14;
 }
 
 .weather-section h2 {
     color: #ff00ff; /* Neon Pink */
-    text-shadow: 0 0 10px #ff00ff;
+    text-shadow: 0 0 15px #ff00ff;
 }
