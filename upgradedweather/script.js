@@ -1,14 +1,14 @@
-const apiKey = "262464baa56ace00c2ed62da282e50fc";
-let isCelsius = true;
+const apiKey = "262464baa56ace00c2ed62da282e50fc"; // Replace with your OpenWeather API key
 
-// DOM Elements
 const searchButton = document.getElementById("searchButton");
 const cityInput = document.getElementById("cityInput");
 const weatherDetails = document.getElementById("weatherDetails");
 const forecastDetails = document.getElementById("forecastDetails");
-const toggleTemp = document.getElementById("toggleTemp");
 
-// Search for Weather
+let isCelsius = true; // Default to Celsius
+let currentWeatherData = null; // To store current weather data for toggling
+let currentForecastData = null; // To store forecast data for toggling
+
 searchButton.addEventListener("click", () => {
     const city = cityInput.value.trim();
     if (city) {
@@ -16,79 +16,120 @@ searchButton.addEventListener("click", () => {
     }
 });
 
-// Fetch Current Weather and Forecast
-async function fetchWeather(city) {
-    try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.cod === 200) {
-            displayCurrentWeather(data);
-            fetchForecast(data.coord.lat, data.coord.lon);
-        } else {
-            weatherDetails.innerHTML = `<p>City not found. Please try again.</p>`;
-        }
-    } catch (error) {
-        weatherDetails.innerHTML = `<p>Error fetching weather data. Please try again later.</p>`;
-        console.error(error);
+// Toggle Temperature Units
+function toggleUnits() {
+    isCelsius = !isCelsius; // Toggle the unit state
+    if (currentWeatherData) {
+        displayCurrentWeather(currentWeatherData);
+    }
+    if (currentForecastData) {
+        displayForecast(currentForecastData);
     }
 }
 
-// Display Current Weather
+// Fetch weather and forecast data
+async function fetchWeather(city) {
+    try {
+        // Fetch current weather
+        const weatherResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+        );
+        currentWeatherData = await weatherResponse.json();
+
+        displayCurrentWeather(currentWeatherData);
+
+        // Fetch 5-day forecast
+        const forecastResponse = await fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`
+        );
+        currentForecastData = await forecastResponse.json();
+
+        displayForecast(currentForecastData);
+
+    } catch (error) {
+        weatherDetails.innerHTML = `<p>Error fetching weather data. Please try again.</p>`;
+    }
+}
+
+// Display current weather
 function displayCurrentWeather(data) {
-    const temp = isCelsius ? data.main.temp : (data.main.temp * 9) / 5 + 32;
-    const unit = isCelsius ? "°C" : "°F";
+    const temp = isCelsius ? data.main.temp : celsiusToFahrenheit(data.main.temp);
+    const tempUnit = isCelsius ? "°C" : "°F";
 
     weatherDetails.innerHTML = `
-        <p><strong>${data.name}</strong></p>
-        <p>${temp.toFixed(1)} ${unit}</p>
-        <p>${data.weather[0].description}</p>
+        <h3>${data.name}, ${data.sys.country}</h3>
+        <p>Temperature: ${temp.toFixed(1)}${tempUnit}</p>
+        <p>Weather: ${data.weather[0].description}</p>
+        <p>Humidity: ${data.main.humidity}%</p>
+        <p>Wind Speed: ${data.wind.speed} m/s</p>
+        <button id="toggleButton" onclick="toggleUnits()">Switch to ${isCelsius ? "Fahrenheit" : "Celsius"}</button>
     `;
 }
 
-// Fetch 7-Day Forecast
-async function fetchForecast(lat, lon) {
-    try {
-        const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (response.ok) {
-            displayForecast(data.daily);
-        } else {
-            forecastDetails.innerHTML = `<p>Unable to fetch forecast data.</p>`;
-        }
-    } catch (error) {
-        forecastDetails.innerHTML = `<p>Error fetching forecast data. Please try again later.</p>`;
-        console.error(error);
-    }
-}
-
-// Display 7-Day Forecast
-function displayForecast(daily) {
+// Display forecast
+function displayForecast(data) {
     forecastDetails.innerHTML = ""; // Clear previous forecast
-    daily.slice(0, 7).forEach((day) => {
-        const temp = isCelsius ? day.temp.day : (day.temp.day * 9) / 5 + 32;
-        const unit = isCelsius ? "°C" : "°F";
 
-        const forecastItem = document.createElement("div");
-        forecastItem.className = "forecast-item";
-        forecastItem.innerHTML = `
-            <p>${new Date(day.dt * 1000).toLocaleDateString()}</p>
-            <p>${temp.toFixed(1)} ${unit}</p>
-            <p>${day.weather[0].description}</p>
+    // Filter data to show one forecast per day
+    const dailyForecasts = data.list.filter((reading) =>
+        reading.dt_txt.includes("12:00:00")
+    );
+
+    dailyForecasts.forEach((forecast) => {
+        const date = new Date(forecast.dt * 1000).toLocaleDateString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+        });
+
+        const temp = isCelsius
+            ? forecast.main.temp
+            : celsiusToFahrenheit(forecast.main.temp);
+        const tempUnit = isCelsius ? "°C" : "°F";
+
+        forecastDetails.innerHTML += `
+            <div class="forecast-item">
+                <h4>${date}</h4>
+                <p>${forecast.weather[0].description}</p>
+                <p>Temp: ${temp.toFixed(1)}${tempUnit}</p>
+                <p>Humidity: ${forecast.main.humidity}%</p>
+            </div>
         `;
-
-        forecastDetails.appendChild(forecastItem);
     });
 }
 
-// Toggle Temperature Unit
-toggleTemp.addEventListener("click", () => {
-    isCelsius = !isCelsius;
-    const city = cityInput.value.trim();
-    if (city) {
-        fetchWeather(city);
+// Helper function to convert Celsius to Fahrenheit
+function celsiusToFahrenheit(celsius) {
+    return celsius * 9 / 5 + 32;
+}
+function displayForecast(data) {
+    if (!data || !data.list) {
+        console.error("Forecast data is missing or invalid:", data);
+        forecastDetails.innerHTML = "<p>Unable to fetch forecast data.</p>";
+        return;
     }
-});
+
+    // Proceed to display forecast
+    forecastDetails.innerHTML = ""; // Clear previous forecast
+
+    const dailyForecasts = data.list.filter((reading) =>
+        reading.dt_txt.includes("12:00:00")
+    );
+
+    dailyForecasts.forEach((forecast) => {
+        const date = new Date(forecast.dt * 1000).toLocaleDateString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+        });
+
+        forecastDetails.innerHTML += `
+            <div class="forecast-item">
+                <h4>${date}</h4>
+                <p>${forecast.weather[0].description}</p>
+                <p>Temp: ${forecast.main.temp}°C</p>
+                <p>Humidity: ${forecast.main.humidity}%</p>
+            </div>
+        `;
+    });
+}
