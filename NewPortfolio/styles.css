@@ -1,0 +1,156 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000; /* Black background for neon contrast */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Gradient Header */
+header {
+    background: linear-gradient(135deg, #8000ff, #ff00ff); /* Purple-pink gradient */
+    padding: 50px 20px;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff;
+}
+
+header h1 {
+    font-size: 3.5em;
+    color: #fff;
+    margin: 0;
+}
+
+header h2 {
+    font-size: 1.5em;
+    margin: 10px 0 0;
+    color: #f5f5f5;
+}
+
+/* Intro Section */
+.intro {
+    background: #1e1e1e;
+    padding: 40px 20px;
+    margin: -20px auto 20px;
+    max-width: 800px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
+    color: #f5f5f5;
+}
+
+.intro h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+.intro p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Projects Section */
+.projects {
+    padding: 40px 20px;
+}
+
+.projects h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #00e6e6;
+    text-shadow: 0 0 10px #00e6e6, 0 0 20px #00e6e6;
+}
+
+.projects .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card {
+    background: #1e1e1e; /* Dark card for contrast */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7), 0 0 10px #8000ff;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 20px #ff00ff;
+}
+
+.card h4 {
+    color: #ff00ff;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1em;
+    color: #cfcfcf;
+    line-height: 1.4;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #00e6e6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.card a:hover {
+    color: #ff00ff;
+}
+
+/* About Section */
+.about {
+    background: #1e1e1e;
+    padding: 40px 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 255, 0.4);
+    color: #f5f5f5;
+}
+
+.about h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #00e6e6;
+    text-shadow: 0 0 10px #00e6e6;
+}
+
+.about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    padding: 20px;
+    background: linear-gradient(135deg, #8000ff, #ff00ff);
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+}
+
+footer p {
+    margin: 0;
+    font-size: 1em;
+}
+
+footer a {
+    color: #00e6e6;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

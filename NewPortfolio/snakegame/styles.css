@@ -1,0 +1,31 @@
+/* General body styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #0a0f24; /* Dark background */
+    color: #39ff14; /* Neon green text */
+  }
+  
+  /* Title styling */
+  h1 {
+    font-size: 36px;
+    margin-top: 20px;
+    text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14;
+  }
+  
+  /* Canvas styling */
+  canvas {
+    display: block;
+    margin: 20px auto;
+    border: 2px solid #39ff14; /* Neon green border */
+    background-color: #10141d; /* Darker game background */
+  }
+  
+  /* Paragraph text */
+  p {
+    font-size: 16px;
+    color: #0ef9f9; /* Neon cyan */
+    text-shadow: 0 0 10px #0ef9f9, 0 0 20px #0ef9f9;
+  }
+  

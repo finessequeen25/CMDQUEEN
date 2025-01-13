@@ -1,0 +1,126 @@
+/* General Body Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace; /* Clean hacker-style font */
+    background: linear-gradient(145deg, #121212, #1e1e1e); /* Smooth dark gradient */
+    color: #00ffcc; /* Soft neon cyan text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Game Container Styling */
+.game-container {
+    text-align: center;
+    background-color: rgba(18, 18, 18, 0.95); /* Semi-transparent dark box */
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #00ffcc; /* Neon cyan border */
+    box-shadow: 0px 0px 15px 5px #00ffcc; /* Subtle neon glow */
+}
+
+/* Title Styling */
+h1 {
+    font-size: 2.5rem;
+    color: #ff007f; /* Neon pink */
+    text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+    margin-bottom: 20px;
+}
+
+/* Board Styling */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin: 20px auto;
+    width: 300px; /* Fixed width for a 3x3 grid */
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #1e1e1e; /* Dark square background */
+    color: #00ffcc; /* Neon cyan for player marks */
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #00ffcc; /* Subtle border to separate cells */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00ffcc;
+}
+
+.cell:hover {
+    background-color: #292929; /* Slightly lighter on hover */
+    box-shadow: 0 0 10px #00ffcc;
+    transform: scale(1.05); /* Small zoom effect */
+}
+
+/* Button Styling */
+button {
+    font-size: 1.2rem; /* Larger text for mobile */
+    padding: 10px 20px; /* Add padding for easier taps */
+    border-radius: 5px;
+    border: none;
+    background-color: #00e6e6;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: scale(0.98); /* Visual feedback for taps */
+}
+
+@media (max-width: 600px) {
+    button {
+        width: 90%; /* Full-width buttons on small screens */
+        margin: 10px auto;
+    }
+}
+
+
+button:hover {
+    background-color: #ff007f; /* Neon pink hover */
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Footer or Small Text */
+small {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #aaaaaa; /* Soft gray for less important text */
+}
+/* Ensure the board scales on smaller screens */
+.cell {
+    width: 30vw; /* Adjust the size dynamically */
+    height: 30vw;
+    font-size: 5vw; /* Adjust font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #fff;
+    cursor: pointer;
+    text-align: center;
+}
+
+@media (min-width: 600px) {
+    .cell {
+        width: 100px; /* Fixed size for larger screens */
+        height: 100px;
+        font-size: 2rem;
+    }
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px; /* Adjust spacing between cells */
+    max-width: 90%; /* Fit within the screen width */
+    margin: 0 auto; /* Center the board */
+}

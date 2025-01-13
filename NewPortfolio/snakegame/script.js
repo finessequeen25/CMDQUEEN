@@ -1,39 +1,44 @@
+// Game variables
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 400;
 canvas.height = 400;
 
-const boxSize = 20;
-let snake = [{ x: 200, y: 200 }];
-let direction = "RIGHT";
+const boxSize = 20; // Size of each grid square
+let snake = [{ x: 200, y: 200 }]; // Initial snake position
+let direction = "RIGHT"; // Initial direction
 let food = spawnFood();
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0; // Retrieve high score
-let gameRunning = true;
-let isPaused = false;
-let gameLoopInterval;
+let gameRunning = true; // Whether the game is active
+let isPaused = false;   // Whether the game is paused
+let gameLoopInterval;   // Interval ID for the game loop
 
 // Neon theme colors
-const snakeColor = "#39ff14";
-const foodColor = "#f900bf";
-const scoreColor = "#0ef9f9";
+const snakeColor = "#39ff14"; // Neon green
+const foodColor = "#f900bf"; // Neon pink
+const scoreColor = "#0ef9f9"; // Neon cyan
 
-// Add event listeners
+// Controls for mobile swipe
+let touchStartX = 0;
+let touchStartY = 0;
+
+// Event listeners
 document.addEventListener("keydown", handleKeyPress);
-document.getElementById("pauseButton").addEventListener("click", togglePause);
+canvas.addEventListener("touchstart", handleTouchStart);
+canvas.addEventListener("touchmove", handleTouchMove);
 
-// Start the game loop
+// Start the game loop with a fixed interval
 function startGameLoop() {
   if (!gameLoopInterval) {
     gameLoopInterval = setInterval(() => {
       if (!isPaused && gameRunning) {
         gameLoop();
       }
-    }, 150);
+    }, 150); // Game speed
   }
 }
 
-// Stop the game loop
+// Stop the game loop (used for Game Over)
 function stopGameLoop() {
   clearInterval(gameLoopInterval);
   gameLoopInterval = null;
@@ -51,7 +56,7 @@ function gameLoop() {
 
 // Clear the canvas
 function clearCanvas() {
-  ctx.fillStyle = "#10141d";
+  ctx.fillStyle = "#10141d"; // Darker game background
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -60,6 +65,7 @@ function drawSnake() {
   ctx.fillStyle = snakeColor;
   snake.forEach(segment => {
     ctx.fillRect(segment.x, segment.y, boxSize, boxSize);
+    // Add glow effect
     ctx.strokeStyle = snakeColor;
     ctx.lineWidth = 2;
     ctx.strokeRect(segment.x, segment.y, boxSize, boxSize);
@@ -70,19 +76,19 @@ function drawSnake() {
 function drawFood() {
   ctx.fillStyle = foodColor;
   ctx.fillRect(food.x, food.y, boxSize, boxSize);
+  // Add glow effect
   ctx.strokeStyle = foodColor;
   ctx.lineWidth = 2;
   ctx.strokeRect(food.x, food.y, boxSize, boxSize);
 }
 
-// Draw the score and high score
+// Draw the score
 function drawScore() {
   ctx.fillStyle = scoreColor;
   ctx.font = "20px Arial";
   ctx.shadowColor = scoreColor;
   ctx.shadowBlur = 10;
   ctx.fillText(`Score: ${score}`, 10, 20);
-  ctx.fillText(`High Score: ${highScore}`, 10, 40);
 }
 
 // Spawn food at a random position
@@ -113,19 +119,16 @@ function moveSnake() {
 
   snake.unshift(head);
 
+  // Check if the snake eats the food
   if (head.x === food.x && head.y === food.y) {
-    score++;
-    food = spawnFood();
-    if (score > highScore) {
-      highScore = score;
-      localStorage.setItem("highScore", highScore); // Save high score
-    }
+    score++; // Increase score
+    food = spawnFood(); // Spawn new food
   } else {
-    snake.pop();
+    snake.pop(); // Remove the tail
   }
 }
 
-// Handle keypress events
+// Change direction or pause game
 function handleKeyPress(event) {
   const keyPressed = event.key;
 
@@ -138,24 +141,54 @@ function handleKeyPress(event) {
   } else if (keyPressed === "ArrowRight" && direction !== "LEFT") {
     direction = "RIGHT";
   } else if (keyPressed === "p" || keyPressed === "P") {
-    togglePause();
+    isPaused = !isPaused; // Toggle pause
   }
 }
 
-// Pause/unpause the game
-function togglePause() {
-  isPaused = !isPaused;
-  document.getElementById("pauseButton").innerText = isPaused ? "Resume" : "Pause";
+// Handle swipe start
+function handleTouchStart(event) {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
 }
 
-// Check collisions
+// Handle swipe move
+function handleTouchMove(event) {
+  if (!touchStartX || !touchStartY) return;
+
+  const touchEndX = event.touches[0].clientX;
+  const touchEndY = event.touches[0].clientY;
+
+  const diffX = touchStartX - touchEndX;
+  const diffY = touchStartY - touchEndY;
+
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    if (diffX > 0 && direction !== "RIGHT") {
+      direction = "LEFT";
+    } else if (diffX < 0 && direction !== "LEFT") {
+      direction = "RIGHT";
+    }
+  } else {
+    if (diffY > 0 && direction !== "DOWN") {
+      direction = "UP";
+    } else if (diffY < 0 && direction !== "UP") {
+      direction = "DOWN";
+    }
+  }
+
+  touchStartX = 0;
+  touchStartY = 0;
+}
+
+// Check for collisions
 function checkCollision() {
   const head = snake[0];
 
+  // Check wall collision
   if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
     endGame();
   }
 
+  // Check self-collision
   for (let i = 1; i < snake.length; i++) {
     if (head.x === snake[i].x && head.y === snake[i].y) {
       endGame();
@@ -166,7 +199,7 @@ function checkCollision() {
 // End the game
 function endGame() {
   gameRunning = false;
-  stopGameLoop();
+  stopGameLoop(); // Stop the game loop
   alert(`Game Over! Your score: ${score}`);
   window.location.reload();
 }

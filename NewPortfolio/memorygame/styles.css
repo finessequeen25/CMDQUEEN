@@ -1,0 +1,127 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #121212;
+    color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 20px 0;
+    color: #00e6e6;
+    text-shadow: 0 0 10px #00e6e6;
+}
+
+#status, #score, #countdown {
+    font-size: 1.2rem;
+    margin: 10px;
+}
+
+.theme-selector {
+    margin: 20px 0;
+}
+
+.theme-selector button {
+    padding: 10px 15px;
+    margin: 0 10px;
+    background-color: #00e6e6;
+    color: #121212;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.theme-selector button:hover {
+    background-color: #00bfbf;
+    transform: scale(1.1);
+}
+
+.grid {
+    display: grid;
+    gap: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.cell {
+    background-color: #00e6e6;
+    color: #121212;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.cell:hover {
+    transform: scale(1.1);
+    background-color: #00bfbf;
+}
+
+button#reset {
+    margin: 20px;
+    padding: 10px 20px;
+    background-color: #ff00ff;
+    color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button#reset:hover {
+    background-color: #bf00bf;
+    transform: scale(1.1);
+}
+/* Adjust the grid and cell sizes for smaller screens */
+.grid {
+    display: grid;
+    gap: 5px; /* Smaller gaps for smaller screens */
+    max-width: 90%; /* Fit the grid within mobile screens */
+    margin: 0 auto;
+    grid-template-columns: repeat(4, 1fr); /* Default grid size */
+}
+
+.cell {
+    width: 20vw; /* Responsive size for mobile */
+    height: 20vw;
+    font-size: 5vw; /* Adjust font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #00e6e6;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.cell.matched {
+    background-color: #bfbfbf; /* Matched card color */
+    pointer-events: none;
+}
+
+.cell:hover {
+    transform: scale(1.1);
+    background-color: #00bfbf;
+}
+
+@media (min-width: 600px) {
+    .cell {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+    }
+}
+.cell {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    will-change: transform, background-color;
+}
