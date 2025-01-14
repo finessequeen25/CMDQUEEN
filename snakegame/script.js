@@ -18,9 +18,18 @@ const snakeColor = "#39ff14";
 const foodColor = "#f900bf";
 const scoreColor = "#0ef9f9";
 
+// Swipe gesture variables
+let touchStartX = 0;
+let touchStartY = 0;
+
 // Add event listeners
 document.addEventListener("keydown", handleKeyPress);
 document.getElementById("pauseButton").addEventListener("click", togglePause);
+
+// Add touch event listeners for swipe detection
+canvas.addEventListener("touchstart", handleTouchStart);
+canvas.addEventListener("touchend", handleTouchEnd);
+canvas.addEventListener("touchmove", (e) => e.preventDefault()); // Prevent scrolling during swipes
 
 // Start the game loop
 function startGameLoop() {
@@ -58,7 +67,7 @@ function clearCanvas() {
 // Draw the snake
 function drawSnake() {
   ctx.fillStyle = snakeColor;
-  snake.forEach(segment => {
+  snake.forEach((segment) => {
     ctx.fillRect(segment.x, segment.y, boxSize, boxSize);
     ctx.strokeStyle = snakeColor;
     ctx.lineWidth = 2;
@@ -139,6 +148,38 @@ function handleKeyPress(event) {
     direction = "RIGHT";
   } else if (keyPressed === "p" || keyPressed === "P") {
     togglePause();
+  }
+}
+
+// Handle swipe start
+function handleTouchStart(event) {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+}
+
+// Handle swipe end
+function handleTouchEnd(event) {
+  const touchEndX = event.changedTouches[0].clientX;
+  const touchEndY = event.changedTouches[0].clientY;
+
+  const deltaX = touchEndX - touchStartX;
+  const deltaY = touchEndY - touchStartY;
+
+  // Determine the swipe direction
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    // Horizontal swipe
+    if (deltaX > 0 && direction !== "LEFT") {
+      direction = "RIGHT"; // Swipe right
+    } else if (deltaX < 0 && direction !== "RIGHT") {
+      direction = "LEFT"; // Swipe left
+    }
+  } else {
+    // Vertical swipe
+    if (deltaY > 0 && direction !== "UP") {
+      direction = "DOWN"; // Swipe down
+    } else if (deltaY < 0 && direction !== "DOWN") {
+      direction = "UP"; // Swipe up
+    }
   }
 }
 
