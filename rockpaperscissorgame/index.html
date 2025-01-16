@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Rock, Paper, Scissors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>✨ Rock, Paper, Scissors ✨</h1>
+        <div class="scoreboard">
+            <p>Player Score: <span id="player-score">0</span></p>
+            <p>Computer Score: <span id="computer-score">0</span></p>
+        </div>
+        <div class="choices">
+            <button class="choice" id="rock" title="Rock">✊</button>
+            <button class="choice" id="paper" title="Paper">✋</button>
+            <button class="choice" id="scissors" title="Scissors">✌️</button>
+        </div>
+        <div class="results">
+            <p id="result-message">Choose an option to start!</p>
+            <p><strong>Your Choice:</strong> <span id="player-choice">-</span></p>
+            <p><strong>Computer's Choice:</strong> <span id="computer-choice">-</span></p>
+        </div>
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
